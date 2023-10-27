@@ -121,7 +121,7 @@ public class TilePicker : MonoBehaviour
                 //remove tile valid
                 var trans = tileContainer[item].transform;
 
-                validSequence.Join(trans.DOMove(tileCollectionAnchor.position + spacing * item + Vector3.down * 10, 0.6f));
+                validSequence.Join(trans.DOMove(tileCollectionAnchor.position + spacing * item + Vector3.down * 5, 0.3f));
                 validSequence.onComplete += () => trans.gameObject.SetActive(false);
                 TileManager.Instance.TotalTileCount --;
             }
@@ -179,7 +179,7 @@ public class TilePicker : MonoBehaviour
         for (int i = 0; i < tileContainer.Count; i++)
         {
            
-            sequence.Join(tileContainer[i].transform.DOMove(tileCollectionAnchor.position + spacing * i, 0.3f));
+            sequence.Join(tileContainer[i].transform.DOMove(tileCollectionAnchor.position + spacing * i, 0.2f));
         }
         if (!MainSequence.IsActive() || MainSequence == null)
             MainSequence = DOTween.Sequence();

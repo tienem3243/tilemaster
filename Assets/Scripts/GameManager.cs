@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviourSingleton<GameManager>
 {
@@ -11,7 +13,8 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     public string currentLv;
     private bool isPause=true;
     Coroutine timeCounter;
-
+    public UnityEvent OnLose;
+    public UnityEvent OnWin;
     public void Init()
     {
         isPause = false;
@@ -33,12 +36,14 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
 
     public void Lose()
     {
+        OnLose?.Invoke();
         isPause = true;
         ViewManager.Show<PauseView>(false, ViewType.ADD);
         ViewManager.GetView<PauseView>().ShowLosePanel();
     }
     public void Win()
     {
+        OnWin?.Invoke();
         isPause = true;
         ViewManager.Show<PauseView>(false, ViewType.ADD);
         ViewManager.GetView<PauseView>().ShowWinPanel();
