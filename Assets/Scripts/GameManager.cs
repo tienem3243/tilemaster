@@ -9,13 +9,14 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     [SerializeField]int playTime;
     [SerializeField] int maxPlayTime=12;
     public string currentLv;
-    private bool isPause;
+    private bool isPause=true;
+    Coroutine timeCounter;
 
-
-    private void Init()
+    public void Init()
     {
-        isPause = true;
-        StartCoroutine(TimeCounter());
+        isPause = false;
+        if (timeCounter != null) StopCoroutine(timeCounter);
+        timeCounter= StartCoroutine(TimeCounter());
     }
 
   
@@ -46,11 +47,12 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     public void Reload()
     {
         Clear();
+        Init();
         TileManager.Instance.LoadLevel(currentLv);
     }
     public void Clear()
     {
-        isPause = true;
+        isPause = false;
         playTime = 0;
         FindObjectOfType<TilePicker>()?.Reset();
         TileManager.Instance.Reset();

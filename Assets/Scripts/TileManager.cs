@@ -17,7 +17,7 @@ public class TileManager : MonoBehaviourSingleton<TileManager>
     private int totalTileCount;
     public List<GameObject> allTileObj;
     public List<Transform> occupiedPositions;
-  
+
 
     public int TotalTileCount { get => totalTileCount; set => totalTileCount = Math.Clamp(value, 0, Int32.MaxValue); }
 
@@ -38,8 +38,7 @@ public class TileManager : MonoBehaviourSingleton<TileManager>
     public void LoadLevel(string lvName)
     {
         LevelConfig data = Resources.Load<LevelConfig>("Data/lv/" + lvName);
-    
-       GameManager.Instance.currentLv = lvName;
+        
         data?.tileConfigs.ForEach(
             config =>
             {
@@ -48,8 +47,10 @@ public class TileManager : MonoBehaviourSingleton<TileManager>
                 SpawnTile(tilePrefabs, trioToSpawn * 3
                     , config);
             });
+        GameManager.Instance.currentLv = lvName;
+        GameManager.Instance.Init();
         totalTileCount = allTileObj.Count;
-        
+
     }
 
     private void SpawnTile(GameObject prefab, int amount, TileConfig config, int zDepth = -2)

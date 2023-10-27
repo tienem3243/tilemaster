@@ -10,15 +10,9 @@ public class GameView : View
     {
         _pauseButton.onValueChanged?.AddListener((x) =>
         {
-            if (x)
-         
-             
-                ViewManager.Show<PauseView>(true,ViewType.ADD);
-           
-         
-            else
-            
-              
+            if (x)             
+                ViewManager.Show<PauseView>(true,ViewType.ADD);    
+            else              
                 ViewManager.Show<GameView>();
             
         });

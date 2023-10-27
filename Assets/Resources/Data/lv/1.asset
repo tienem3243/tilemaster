@@ -24,11 +24,11 @@ MonoBehaviour:
     sprite: {fileID: -1308095064, guid: 98a16568db616ab40bb548d575bf0d6d, type: 3}
     chance: 51
   - tileName: tile4
-    sprite: {fileID: -69147102, guid: 98a16568db616ab40bb548d575bf0d6d, type: 3}
+    sprite: {fileID: 1915344328, guid: 98a16568db616ab40bb548d575bf0d6d, type: 3}
     chance: 33
   - tileName: tile5
-    sprite: {fileID: -170018626, guid: 98a16568db616ab40bb548d575bf0d6d, type: 3}
+    sprite: {fileID: -149107202, guid: 98a16568db616ab40bb548d575bf0d6d, type: 3}
     chance: 44
   - tileName: tile6
-    sprite: {fileID: 1973180409, guid: 98a16568db616ab40bb548d575bf0d6d, type: 3}
+    sprite: {fileID: -21291844, guid: 98a16568db616ab40bb548d575bf0d6d, type: 3}
     chance: 22

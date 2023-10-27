@@ -1,12 +1,8 @@
-using DG.Tweening;
-using System.Collections;
+
 using System.Collections.Generic;
-using System.Text;
-using System.Xml;
-using TMPro;
-using Unity.PlasticSCM.Editor.WebApi;
+
 using UnityEngine;
-using UnityEngine.UI;
+
 
 public class ViewManager : MonoBehaviourSingleton<ViewManager>  
 {

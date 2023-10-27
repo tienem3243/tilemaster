@@ -15,20 +15,20 @@ MonoBehaviour:
   maxAmount: 40
   tileConfigs:
   - tileName: tile1
-    sprite: {fileID: 1015400979, guid: 98a16568db616ab40bb548d575bf0d6d, type: 3}
+    sprite: {fileID: -969544866, guid: 98a16568db616ab40bb548d575bf0d6d, type: 3}
     chance: 12
   - tileName: tile2
     sprite: {fileID: 1194194531, guid: 98a16568db616ab40bb548d575bf0d6d, type: 3}
     chance: 12
   - tileName: tile3
-    sprite: {fileID: -1308095064, guid: 98a16568db616ab40bb548d575bf0d6d, type: 3}
-    chance: 51
+    sprite: {fileID: -80711047, guid: 98a16568db616ab40bb548d575bf0d6d, type: 3}
+    chance: 32
   - tileName: tile4
     sprite: {fileID: -69147102, guid: 98a16568db616ab40bb548d575bf0d6d, type: 3}
-    chance: 70
+    chance: 45
   - tileName: tile5
-    sprite: {fileID: -170018626, guid: 98a16568db616ab40bb548d575bf0d6d, type: 3}
+    sprite: {fileID: 256769795, guid: 98a16568db616ab40bb548d575bf0d6d, type: 3}
     chance: 44
   - tileName: tile6
-    sprite: {fileID: 1973180409, guid: 98a16568db616ab40bb548d575bf0d6d, type: 3}
+    sprite: {fileID: 418383203, guid: 98a16568db616ab40bb548d575bf0d6d, type: 3}
     chance: 22

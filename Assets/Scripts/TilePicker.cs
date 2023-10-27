@@ -86,15 +86,15 @@ public class TilePicker : MonoBehaviour
                 {
                     posGo = tileContainer.FindLastIndex(x => x.tileName == pickedTile.tileName) + 1;
 
-
-                    InserTile(pickedTile, posGo);
+                    tileContainer.Insert(posGo, pickedTile);
                 }
                 else
                 {
 
-                    AddTile(pickedTile);
-                    return;
+                    tileContainer.Add(pickedTile);
+                    
                 }
+                Recallculate();
             //rule handler and other
             conditionCheck:
              
@@ -112,7 +112,7 @@ public class TilePicker : MonoBehaviour
         int[] res = new int[requireTileAmount];
         bool result = rule.RuleCheck(tileContainer.ToArray(), out res);
         Sequence validSequence = DOTween.Sequence();
-        validSequence.Pause();
+     
         if (result)
         {
      
@@ -121,7 +121,7 @@ public class TilePicker : MonoBehaviour
                 //remove tile valid
                 var trans = tileContainer[item].transform;
 
-                validSequence.Join(trans.DOMove(tileCollectionAnchor.position + spacing * item + Vector3.down * 10, 0.3f));
+                validSequence.Join(trans.DOMove(tileCollectionAnchor.position + spacing * item + Vector3.down * 10, 0.6f));
                 validSequence.onComplete += () => trans.gameObject.SetActive(false);
                 TileManager.Instance.TotalTileCount --;
             }
@@ -171,40 +171,21 @@ public class TilePicker : MonoBehaviour
 
     }
 
-    [ContextMenu("Recallculate")]
-    private void InserTile(Tile tile, int index)
-    {
-        tileContainer.Insert(index, tile);
-        Sequence sequence = DOTween.Sequence();
-      
-        for (int i = 0; i < tileContainer.Count; i++)
-        {
-            if (i == index) continue;
-            sequence.Join(tileContainer[i].transform.DOMove(tileCollectionAnchor.position + spacing * i, 0.2f));
-        }
-
-        sequence.Join(tile.transform.DOMove(tileCollectionAnchor.position + spacing * index, 0.3f))
-            .SetEase(moveToContenerCurve);
-        sequence.Pause();
-        MainSequence.Append(sequence);
-    }
-    private void AddTile(Tile tile)
-    {
-       
-       Tween tween= tile.gameObject.transform.DOMove(tileCollectionAnchor.position + spacing * tileContainer.Count, 0.2f)
-                    .SetEase(moveToContenerCurve);
-        tileContainer.Add(tile);
-        tween.Pause();
-        MainSequence.Append(tween);
-    }
+   
+   
     public void Recallculate()
     {
         Sequence sequence = DOTween.Sequence();
         for (int i = 0; i < tileContainer.Count; i++)
         {
-            sequence.Join(tileContainer[i].transform.DOMove(tileCollectionAnchor.position + spacing * i, 0.2f));
+           
+            sequence.Join(tileContainer[i].transform.DOMove(tileCollectionAnchor.position + spacing * i, 0.3f));
         }
-    
+        if (!MainSequence.IsActive() || MainSequence == null)
+            MainSequence = DOTween.Sequence();
+
+        MainSequence.Append(sequence);
+
     }
     public void Reset()
     {
