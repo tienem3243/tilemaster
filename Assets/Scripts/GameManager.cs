@@ -5,14 +5,14 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviourSingleton<GameManager>
 {
-    [SerializeField] int totalTileCount;
+  
     [SerializeField]int playTime;
     [SerializeField] int maxPlayTime=12;
-
+    public string currentLv;
     private bool isPause;
-    
 
-    private void Start()
+
+    private void Init()
     {
         isPause = true;
         StartCoroutine(TimeCounter());
@@ -33,16 +33,28 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     public void Lose()
     {
         isPause = true;
-        Debug.Log("Lose");
+        ViewManager.Show<PauseView>(false, ViewType.ADD);
+        ViewManager.GetView<PauseView>().ShowLosePanel();
     }
     public void Win()
     {
         isPause = true;
-        Debug.Log("Win");
+        ViewManager.Show<PauseView>(false, ViewType.ADD);
+        ViewManager.GetView<PauseView>().ShowWinPanel();
     }
-    public void Reset()
+  
+    public void Reload()
+    {
+        Clear();
+        TileManager.Instance.LoadLevel(currentLv);
+    }
+    public void Clear()
     {
         isPause = true;
         playTime = 0;
+        FindObjectOfType<TilePicker>()?.Reset();
+        TileManager.Instance.Reset();
+        
+
     }
 }

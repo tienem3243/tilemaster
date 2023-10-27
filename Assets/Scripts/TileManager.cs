@@ -17,7 +17,7 @@ public class TileManager : MonoBehaviourSingleton<TileManager>
     private int totalTileCount;
     public List<GameObject> allTileObj;
     public List<Transform> occupiedPositions;
-    public Dictionary<string, int> tileStorage;
+  
 
     public int TotalTileCount { get => totalTileCount; set => totalTileCount = Math.Clamp(value, 0, Int32.MaxValue); }
 
@@ -38,16 +38,18 @@ public class TileManager : MonoBehaviourSingleton<TileManager>
     public void LoadLevel(string lvName)
     {
         LevelConfig data = Resources.Load<LevelConfig>("Data/lv/" + lvName);
+    
+       GameManager.Instance.currentLv = lvName;
         data?.tileConfigs.ForEach(
             config =>
             {
                 double s = data.CalculateNormalize(config);
                 int trioToSpawn = (int)Math.Round(s * (double)data.maxAmount / 3);
-                Debug.Log(trioToSpawn);
                 SpawnTile(tilePrefabs, trioToSpawn * 3
                     , config);
             });
-        totalTileCount = data.maxAmount;
+        totalTileCount = allTileObj.Count;
+        
     }
 
     private void SpawnTile(GameObject prefab, int amount, TileConfig config, int zDepth = -2)
@@ -117,6 +119,7 @@ public class TileManager : MonoBehaviourSingleton<TileManager>
     }
     public void Reset()
     {
+        occupiedPositions.Clear();
         allTileObj.ForEach(x => Destroy(x));
         allTileObj.Clear();
     }

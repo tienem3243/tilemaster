@@ -58,18 +58,26 @@ public class TilePicker : MonoBehaviour
             if (Physics.Raycast(ray, out hits))
             {
                 GameObject clickedObject = hits.collider.gameObject;
+                //exception out
                 if (lastPick == clickedObject) return;
                 lastPick = clickedObject;
                 if (!clickedObject.CompareTag("Tile")) return;
-                Debug.Log("ray");
-             
-                TileManager.Instance.occupiedPositions.Remove(clickedObject.transform);
+                if (tileContainer.Count == tileContainerCap)
+                {
+
+                    goto conditionCheck;
+
+                }
+                //remove occupiedPosition to creat more tile if necesary
+                TileManager.Instance.occupiedPositions?.Remove(clickedObject.transform);
+                //init sequence
                 MainSequence = DOTween.Sequence();
                 MainSequence.OnComplete(() => canPick = true);
                 MainSequence.PrependCallback(() => canPick = false);
 
+                //get tile component
                 var pickedTile = clickedObject.GetComponent<Tile>();
-                //reset and prevent collision 
+                //reset and prevent collision of tile
                 DeformTile(pickedTile);
                 //find right position on container
                 int posGo;
@@ -77,65 +85,90 @@ public class TilePicker : MonoBehaviour
                 if (tileContainer.Exists(x => x.tileName == pickedTile.tileName))
                 {
                     posGo = tileContainer.FindLastIndex(x => x.tileName == pickedTile.tileName) + 1;
-                    Debug.Log("insert");
+
 
                     InserTile(pickedTile, posGo);
                 }
                 else
                 {
-                    Debug.Log("add");
+
                     AddTile(pickedTile);
                     return;
                 }
-                //rule handler and other
-                OnSelectTile?.Invoke(tileContainer);
-                int requireTileAmount = rule.GetParameter()[0];
-                int[] res = new int[requireTileAmount];
-                bool result = rule.RuleCheck(tileContainer.ToArray(), out res);
-                if (result)
-                {
-                    Sequence sequence = DOTween.Sequence();
-                    sequence.Pause();
-                    foreach (var item in res)
-                    {
-                        var trans = tileContainer[item].transform;
-
-                        sequence.Join(trans.DOMove(tileCollectionAnchor.position + spacing * item + Vector3.down * 10, 0.5f));
-                    }
-
-                    sequence.AppendCallback(() =>
-                    {
-                        tileContainer.RemoveRange(res[0], requireTileAmount);
-                    });
-                    MainSequence.Append(sequence);
-                    MainSequence.AppendCallback(() => Recallculate());
-                    MainSequence.AppendCallback(() =>
-                    {
-                        TileManager.Instance.TotalTileCount -= requireTileAmount;
-                        //check is win or lose
-                        if (TileManager.Instance.TotalTileCount == 0) GameManager.Instance.Win();
-                        if (tileContainer.Count == tileContainerCap)
-                        {
-                            //gamerulecheck
-                            GameManager.Instance.Lose();
-                            OnReachContainerCap.Invoke();
-                            return;
-
-                        }
-                    });
-                }
-
+            //rule handler and other
+            conditionCheck:
+             
+             
+                EndPickHandler();
             }
 
         }
+    }
+
+    private void EndPickHandler()
+    {
+        OnSelectTile?.Invoke(tileContainer);
+        int requireTileAmount = rule.GetParameter()[0];
+        int[] res = new int[requireTileAmount];
+        bool result = rule.RuleCheck(tileContainer.ToArray(), out res);
+        Sequence validSequence = DOTween.Sequence();
+        validSequence.Pause();
+        if (result)
+        {
+     
+            foreach (var item in res)
+            {
+                //remove tile valid
+                var trans = tileContainer[item].transform;
+
+                validSequence.Join(trans.DOMove(tileCollectionAnchor.position + spacing * item + Vector3.down * 10, 0.3f));
+                validSequence.onComplete += () => trans.gameObject.SetActive(false);
+                TileManager.Instance.TotalTileCount --;
+            }
+
+            validSequence.AppendCallback(() =>
+            {
+                tileContainer.RemoveRange(res[0], requireTileAmount);
+            });
+       
+            //recalculate tile positon after remove some tile
+            validSequence.AppendCallback(() => Recallculate());
+          
+        }
+        //end phase handler
+
+        validSequence.AppendCallback(() =>
+        {
+           
+            //check is win or lose
+            if (TileManager.Instance.TotalTileCount == 0) GameManager.Instance.Win();
+
+        });
+
+        validSequence.AppendCallback(() =>
+        {
+
+            bool resl = rule.RuleCheck(tileContainer.ToArray(), out int[] a);
+
+            if (tileContainer.Count == tileContainerCap && !resl)
+                GameManager.Instance.Lose();
+
+        });
+        if(!MainSequence.IsActive()||MainSequence==null)
+        MainSequence=DOTween.Sequence();
+        
+        MainSequence.Append(validSequence);
+
+       
     }
 
     private void DeformTile(Tile pickedTile)
     {
         pickedTile.rb.useGravity = false;
         pickedTile.col.enabled = false;
-        pickedTile.transform.DORotate(Vector3.zero, 0.5f);
-        pickedTile.transform.DOScale(Vector3.one / 2, 0.5f).SetEase(scaleCurve);
+        pickedTile.transform.DORotate(Vector3.zero, 0.3f);
+        pickedTile.transform.DOScale(Vector3.one / 2, 0.3f).SetEase(scaleCurve);
+
     }
 
     [ContextMenu("Recallculate")]
@@ -173,8 +206,8 @@ public class TilePicker : MonoBehaviour
         }
     
     }
-    private void Reset()
+    public void Reset()
     {
-        
+        tileContainer.Clear();
     }
 }
