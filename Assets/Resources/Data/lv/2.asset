@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b6989fcd417f4a4f8a51c588c64206f, type: 3}
+  m_Name: 2
+  m_EditorClassIdentifier: 
+  maxAmount: 40
+  tileConfigs:
+  - tileName: tile1
+    sprite: {fileID: 1015400979, guid: 98a16568db616ab40bb548d575bf0d6d, type: 3}
+    chance: 12
+  - tileName: tile2
+    sprite: {fileID: 1194194531, guid: 98a16568db616ab40bb548d575bf0d6d, type: 3}
+    chance: 12
+  - tileName: tile3
+    sprite: {fileID: -1308095064, guid: 98a16568db616ab40bb548d575bf0d6d, type: 3}
+    chance: 51
+  - tileName: tile4
+    sprite: {fileID: -69147102, guid: 98a16568db616ab40bb548d575bf0d6d, type: 3}
+    chance: 70
+  - tileName: tile5
+    sprite: {fileID: -170018626, guid: 98a16568db616ab40bb548d575bf0d6d, type: 3}
+    chance: 44
+  - tileName: tile6
+    sprite: {fileID: 1973180409, guid: 98a16568db616ab40bb548d575bf0d6d, type: 3}
+    chance: 22
