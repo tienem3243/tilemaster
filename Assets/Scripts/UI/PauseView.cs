@@ -73,6 +73,7 @@ public class PauseView : View
         {
             GameManager.Instance.Reload();
             ViewManager.Show<GameView>();
+           
         });
         menu.onClick?.AddListener(() =>
         {

@@ -29,6 +29,9 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
         {
             
             playTime+=isPause?0:1;
+            int time = maxPlayTime - playTime;
+            time=Math.Clamp(time,0,maxPlayTime);
+            ViewManager.GetView<GameView>().SetTime(time);
             yield return new WaitForSeconds(1);
         }
         Lose();
@@ -43,7 +46,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     }
     public void Win()
     {
-        OnWin?.Invoke();
+        OnWin?.Invoke();    
         isPause = true;
         ViewManager.Show<PauseView>(false, ViewType.ADD);
         ViewManager.GetView<PauseView>().ShowWinPanel();
@@ -53,6 +56,8 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     {
         Clear();
         Init();
+        ViewManager.GetView<GameView>().Initialize();
+        ViewManager.GetView<PauseView>().Initialize();
         TileManager.Instance.LoadLevel(currentLv);
     }
     public void Clear()
