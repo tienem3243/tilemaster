@@ -69,4 +69,10 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
         
 
     }
+
+    internal void Pause(bool state)
+    {
+        
+        isPause = state;
+    }
 }

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class PauseView : View
 {
-    [SerializeField] Button next, reload, menu;
+    [SerializeField] Button next, reload, menu, back;
     private const string LOSE = "You Lose";
     private const string WIN = "You Win";
     private const string PAUSE = "Pause";
@@ -86,6 +86,10 @@ public class PauseView : View
             int i = Int32.Parse(GameManager.Instance.currentLv) + 1;
             TileManager.Instance.LoadLevel(i.ToString());
             ViewManager.Show<GameView>();
+        });
+        back.onClick.AddListener(() =>
+        {
+            ViewManager.ShowLast();
         });
     }
 }

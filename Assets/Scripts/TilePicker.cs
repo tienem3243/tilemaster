@@ -62,19 +62,11 @@ public class TilePicker : MonoBehaviour
                 if (lastPick == clickedObject) return;
                 lastPick = clickedObject;
                 if (!clickedObject.CompareTag("Tile")) return;
-                if (tileContainer.Count == tileContainerCap)
-                {
 
-                    goto conditionCheck;
-
-                }
                 //remove occupiedPosition to creat more tile if necesary
                 TileManager.Instance.occupiedPositions?.Remove(clickedObject.transform);
                 //init sequence
-                MainSequence = DOTween.Sequence();
-                
-                MainSequence.OnComplete(() => canPick = true);
-                MainSequence.PrependCallback(() => canPick = false);
+             
 
                 //get tile component
                 var pickedTile = clickedObject.GetComponent<Tile>();
@@ -91,15 +83,13 @@ public class TilePicker : MonoBehaviour
                 else
                 {
                     tileContainer.Add(pickedTile);
-             
-
                 }
+             
+                MainSequence = DOTween.Sequence();
+
+                MainSequence.OnComplete(() => canPick = true);
+                MainSequence.PrependCallback(() => canPick = false);
                 MainSequence.Append(Recallculate());
-
-
-            //rule handler and other
-            conditionCheck:
-
                 MainSequence.Append(EndPickHandler());
             }
 
