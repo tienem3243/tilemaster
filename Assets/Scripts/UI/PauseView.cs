@@ -20,7 +20,7 @@ public class PauseView : View
 
     private void SetAllEnable(bool state)
     {
-        next.gameObject.SetActive(state);
+        next.gameObject.SetActive(GameManager.Instance.HasNext());
         reload.gameObject.SetActive(state);
         menu.gameObject.SetActive(state);
     }
@@ -36,13 +36,15 @@ public class PauseView : View
     public void ShowPausePanel(bool toggle)
     {
         SetAllEnable(toggle);
-        next.gameObject.SetActive(!toggle);
+        back.gameObject.SetActive(true);
+        next.gameObject.SetActive(toggle);
         stateGameText.gameObject.SetActive(toggle);
         stateGameText.text = PAUSE;
     }
     public void ShowWinPanel()
     {
         SetAllEnable(true);
+        back.gameObject.SetActive(false);
         StartCoroutine(TypeText(stateGameText, WIN));
 
     }
@@ -82,9 +84,7 @@ public class PauseView : View
         });
         next.onClick?.AddListener(() =>
         {
-            GameManager.Instance.Clear();
-            int i = Int32.Parse(GameManager.Instance.currentLv) + 1;
-            TileManager.Instance.LoadLevel(i.ToString());
+            GameManager.Instance.NextLv();
             ViewManager.Show<GameView>();
         });
         back.onClick.AddListener(() =>

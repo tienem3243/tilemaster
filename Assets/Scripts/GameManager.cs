@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -69,10 +70,25 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
         
 
     }
-
+    public void NextLv()
+    {
+        isPause = false;
+        int i = Int32.Parse(GameManager.Instance.currentLv) + 1;
+        var data = Resources.Load("Data/lv/" + i);
+        if (HasNext()) TileManager.Instance.LoadLevel(i.ToString());
+        
+      
+    }
     internal void Pause(bool state)
     {
         
         isPause = state;
+    }
+    public bool HasNext()
+    {
+        int i = Int32.Parse(GameManager.Instance.currentLv) + 1;
+        var data = Resources.Load("Data/lv/" + i);
+        if (data == null) return false;  
+        else return true;
     }
 }

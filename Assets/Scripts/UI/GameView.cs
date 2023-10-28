@@ -13,8 +13,10 @@ public class GameView : View
         {
             if (x)
             {
-                ViewManager.Show<PauseView>(true, ViewType.ADD);
                 GameManager.Instance.Pause(x);
+                ViewManager.GetView<PauseView>().ShowPausePanel(true);
+                ViewManager.Show<PauseView>(true, ViewType.ADD);
+               
             }
                
             else

@@ -74,8 +74,8 @@ public class ViewManager : MonoBehaviourSingleton<ViewManager>
             Show(Instance._history.Pop(), false);
         }
     }
-  
-
 
    
+
+
 }

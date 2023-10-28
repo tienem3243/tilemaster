@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b6989fcd417f4a4f8a51c588c64206f, type: 3}
   m_Name: 2
   m_EditorClassIdentifier: 
-  maxAmount: 40
+  maxAmount: 33
   tileConfigs:
   - tileName: tile1
     sprite: {fileID: -969544866, guid: 98a16568db616ab40bb548d575bf0d6d, type: 3}
