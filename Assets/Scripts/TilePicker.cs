@@ -22,8 +22,8 @@ public class TilePicker : MonoBehaviour
     private Sequence MainSequence;
 
     private Gamerule rule;
-    private bool canPick=true;
-    private GameObject lastPick=default;
+    private bool canPick = true;
+    private GameObject lastPick = default;
     public AnimationCurve scaleCurve;
     public AnimationCurve moveToContenerCurve;
     private void OnDrawGizmos()
@@ -31,7 +31,7 @@ public class TilePicker : MonoBehaviour
         for (int i = 0; i < tileContainerCap; i++)
         {
             Vector3 posGo = tileCollectionAnchor.position + spacing * i;
-            Gizmos.DrawCube(posGo, Vector3.one/2);
+            Gizmos.DrawCube(posGo, Vector3.one / 2);
         }
     }
     private void Start()
@@ -44,15 +44,15 @@ public class TilePicker : MonoBehaviour
     }
     private void Update()
     {
-      /*  //swing selection
-        foreach (var item in tileContainer)
-        {
-            item.transform.Rotate(Vector3.forward, rotationSpeed * 360 * Time.deltaTime);
-        }*/
+        /*  //swing selection
+          foreach (var item in tileContainer)
+          {
+              item.transform.Rotate(Vector3.forward, rotationSpeed * 360 * Time.deltaTime);
+          }*/
 
-        if (Input.GetMouseButtonDown(0)&&canPick&&!EventSystem.current.IsPointerOverGameObject())
+        if (Input.GetMouseButtonDown(0) && canPick && !EventSystem.current.IsPointerOverGameObject())
         {
-           
+
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hits;
             if (Physics.Raycast(ray, out hits))
@@ -72,6 +72,7 @@ public class TilePicker : MonoBehaviour
                 TileManager.Instance.occupiedPositions?.Remove(clickedObject.transform);
                 //init sequence
                 MainSequence = DOTween.Sequence();
+                
                 MainSequence.OnComplete(() => canPick = true);
                 MainSequence.PrependCallback(() => canPick = false);
 
@@ -85,37 +86,37 @@ public class TilePicker : MonoBehaviour
                 if (tileContainer.Exists(x => x.tileName == pickedTile.tileName))
                 {
                     posGo = tileContainer.FindLastIndex(x => x.tileName == pickedTile.tileName) + 1;
-
                     tileContainer.Insert(posGo, pickedTile);
                 }
                 else
                 {
-
                     tileContainer.Add(pickedTile);
-                    
+             
+
                 }
-                Recallculate();
+                MainSequence.Append(Recallculate());
+
+
             //rule handler and other
             conditionCheck:
-             
-             
-                EndPickHandler();
+
+                MainSequence.Append(EndPickHandler());
             }
 
         }
     }
 
-    private void EndPickHandler()
+    private Sequence EndPickHandler()
     {
         OnSelectTile?.Invoke(tileContainer);
         int requireTileAmount = rule.GetParameter()[0];
         int[] res = new int[requireTileAmount];
         bool result = rule.RuleCheck(tileContainer.ToArray(), out res);
         Sequence validSequence = DOTween.Sequence();
-     
+
         if (result)
         {
-     
+
             foreach (var item in res)
             {
                 //remove tile valid
@@ -123,23 +124,23 @@ public class TilePicker : MonoBehaviour
 
                 validSequence.Join(trans.DOMove(tileCollectionAnchor.position + spacing * item + Vector3.down * 5, 0.3f));
                 validSequence.onComplete += () => trans.gameObject.SetActive(false);
-                TileManager.Instance.TotalTileCount --;
+                TileManager.Instance.TotalTileCount--;
             }
 
             validSequence.AppendCallback(() =>
             {
                 tileContainer.RemoveRange(res[0], requireTileAmount);
             });
-       
+
             //recalculate tile positon after remove some tile
             validSequence.AppendCallback(() => Recallculate());
-          
+
         }
         //end phase handler
 
         validSequence.AppendCallback(() =>
         {
-           
+
             //check is win or lose
             if (TileManager.Instance.TotalTileCount == 0) GameManager.Instance.Win();
 
@@ -154,12 +155,10 @@ public class TilePicker : MonoBehaviour
                 GameManager.Instance.Lose();
 
         });
-        if(!MainSequence.IsActive()||MainSequence==null)
-        MainSequence=DOTween.Sequence();
-        
-        MainSequence.Append(validSequence);
 
-       
+
+        return validSequence;
+
     }
 
     private void DeformTile(Tile pickedTile)
@@ -171,20 +170,17 @@ public class TilePicker : MonoBehaviour
 
     }
 
-   
-   
-    public void Recallculate()
+
+
+    public Sequence Recallculate()
     {
         Sequence sequence = DOTween.Sequence();
         for (int i = 0; i < tileContainer.Count; i++)
         {
-           
+
             sequence.Join(tileContainer[i].transform.DOMove(tileCollectionAnchor.position + spacing * i, 0.2f));
         }
-        if (!MainSequence.IsActive() || MainSequence == null)
-            MainSequence = DOTween.Sequence();
-
-        MainSequence.Append(sequence);
+        return sequence;
 
     }
     public void Reset()

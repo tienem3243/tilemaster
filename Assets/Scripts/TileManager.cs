@@ -13,7 +13,7 @@ public class TileManager : MonoBehaviourSingleton<TileManager>
     public float lowerAngle = 45f;
     public float upperAngle = 315f;
     public int maxAttempts = 100;
-    int succeedSpawn = 0;
+ 
     private int totalTileCount;
     public List<GameObject> allTileObj;
     public List<Transform> occupiedPositions;
@@ -55,7 +55,7 @@ public class TileManager : MonoBehaviourSingleton<TileManager>
 
     private void SpawnTile(GameObject prefab, int amount, TileConfig config, int zDepth = -2)
     {
-
+        int succeedSpawn = 0;
         for (int i = 0; i < amount; i++)
         {
             int at = 0;
@@ -115,7 +115,7 @@ public class TileManager : MonoBehaviourSingleton<TileManager>
             zDepth -= 1;
             SpawnTile(prefab, amount - succeedSpawn, config, zDepth);
         }
-        else succeedSpawn = 0;
+   
 
     }
     public void Reset()

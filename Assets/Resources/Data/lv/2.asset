@@ -27,8 +27,8 @@ MonoBehaviour:
     sprite: {fileID: -69147102, guid: 98a16568db616ab40bb548d575bf0d6d, type: 3}
     chance: 45
   - tileName: tile5
-    sprite: {fileID: 256769795, guid: 98a16568db616ab40bb548d575bf0d6d, type: 3}
+    sprite: {fileID: -21291844, guid: 98a16568db616ab40bb548d575bf0d6d, type: 3}
     chance: 44
   - tileName: tile6
-    sprite: {fileID: 418383203, guid: 98a16568db616ab40bb548d575bf0d6d, type: 3}
-    chance: 22
+    sprite: {fileID: 1574361468, guid: 98a16568db616ab40bb548d575bf0d6d, type: 3}
+    chance: 72
