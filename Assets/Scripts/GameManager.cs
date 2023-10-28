@@ -73,6 +73,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     public void NextLv()
     {
         isPause = false;
+        Clear();
         int i = Int32.Parse(GameManager.Instance.currentLv) + 1;
         var data = Resources.Load("Data/lv/" + i);
         if (HasNext()) TileManager.Instance.LoadLevel(i.ToString());

@@ -37,7 +37,7 @@ public class PauseView : View
     {
         SetAllEnable(toggle);
         back.gameObject.SetActive(true);
-        next.gameObject.SetActive(toggle);
+        next.gameObject.SetActive(false);
         stateGameText.gameObject.SetActive(toggle);
         stateGameText.text = PAUSE;
     }
